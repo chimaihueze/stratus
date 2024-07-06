@@ -4,6 +4,8 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from organisation.models import Organisation
+
 
 class CustomUserManager(BaseUserManager):
     """
@@ -43,6 +45,7 @@ class User(AbstractUser):
     email = models.EmailField(unique=True, null=False)
     password = models.CharField(max_length=120, null=False)
     phone = models.CharField(max_length=15, null=True)
+    organisations = models.ManyToManyField(Organisation, related_name='users')
     username = None
 
     objects = CustomUserManager()
