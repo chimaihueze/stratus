@@ -4,8 +4,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from connexity.authentication import refresh_token
-from connexity.serializers import RegisterUserSerializer
+from users.authentication import refresh_token
+from users.serializers import RegisterUserSerializer
 
 
 class RegisterView(APIView):

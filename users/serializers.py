@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from connexity.models import User
+from users.models import User
 from organisation.models import Organisation
 
 
@@ -26,4 +26,6 @@ class RegisterUserSerializer(UserSerializer):
         return user
 
 
-
+class LoginUserSerializer(serializers.ModelSerializer):
+    email = serializers.CharField()
+    password = serializers.CharField()
