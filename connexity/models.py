@@ -42,4 +42,12 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=120, null=False)
     email = models.EmailField(unique=True, null=False)
     password = models.CharField(max_length=120, null=False)
-    phone = models.CharField(max_length=120)
+    phone = models.CharField(max_length=15, null=True)
+    username = None
+
+    objects = CustomUserManager()
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    def __str__(self):
+        return self.email
