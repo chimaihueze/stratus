@@ -7,7 +7,7 @@ from users.models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'phone']
+        fields = ['firstName', 'lastName', 'email', 'phone']
 
 
 class RegisterUserSerializer(UserSerializer):
@@ -20,7 +20,7 @@ class RegisterUserSerializer(UserSerializer):
         """
         Validate Input
         """
-        required_fields = ['first_name', 'last_name', 'email', 'password']
+        required_fields = ['firstName', 'lastName', 'email', 'password']
         errors = []
 
         for field in required_fields:
