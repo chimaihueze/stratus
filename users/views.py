@@ -76,3 +76,26 @@ class LoginView(APIView):
                 "statusCode": 401
             }
             return Response(response, status.HTTP_401_UNAUTHORIZED)
+
+
+class UserView(APIView):
+    permission_classes = [AllowAny]
+    serializer_class = UserSerializer
+
+    def get(self, request, pk):
+        user = User.objects.get(pk=pk)
+
+        if user:
+            response = {
+                "status": "success",
+                "message": "User Found",
+                "data": {
+                    "userId": user.userId,
+                    "firstName": user.first_name,
+                    "lastName": user.last_name,
+                    "email": user.email,
+                    "phone": user.phone
+                }
+            }
+            return Response(response, status.HTTP_200_OK)
+
