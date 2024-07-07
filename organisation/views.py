@@ -53,23 +53,27 @@ class OrganisationView(APIView):
 
 class GetOrganisationView(APIView):
     def get(self, request, pk):
-        organisation = Organisation.objects.get(pk=pk)
         user = request.user
-        serializer = OrganisationSerializer(organisation)
 
-        if organisation in user.organisations.all():
+        try:
+            organisation = Organisation.objects.get(pk=pk)
+            serializer = OrganisationSerializer(organisation)
+
+            if organisation in user.organisations.all():
+                response = {
+                    "status": "success",
+                    "message": "Organisation details retrieved successfully",
+                    "data": serializer.data
+                }
+                return Response(response, status.HTTP_200_OK)
             response = {
-                "status": "success",
-                "message": "Organisation details retrieved successfully",
-                "data": serializer.data
+                "status": "Bad Request",
+                "message": "Client error",
+                "statusCode": 400
             }
-            return Response(response, status.HTTP_200_OK)
-        response = {
-            "status": "Bad Request",
-            "message": "Client error",
-            "statusCode": 400
-        }
-        return Response(response, status.HTTP_401_UNAUTHORIZED)
+            return Response(response, status.HTTP_401_UNAUTHORIZED)
+        except:
+            return Response({"error": "Organisation does not exist"})
 
 
 class CreateOrganisationView(APIView):
