@@ -16,6 +16,25 @@ class RegisterUserSerializer(UserSerializer):
     class Meta(UserSerializer.Meta):
         fields = UserSerializer.Meta.fields + ['password']
 
+    def validate(self, data):
+        """
+        Validate Input
+        """
+        required_fields = ['first_name', 'last_name', 'email', 'password']
+        errors = []
+
+        for field in required_fields:
+            if not data.get(field):
+                errors.append({
+                    "field": field,
+                    "message": f"{field} cannot be empty"
+                })
+
+        if errors:
+            raise serializers.ValidationError(errors)
+
+        return data
+
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
         create_organisation(user)
