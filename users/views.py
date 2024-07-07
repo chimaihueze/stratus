@@ -25,8 +25,8 @@ class RegisterView(APIView):
                     "accessToken": str(token),
                     "user": {
                         "userId": user.userId,
-                        "firstName": user.first_name,
-                        "lastName": user.last_name,
+                        "firstName": user.firstName,
+                        "lastName": user.lastName,
                         "email": user.email,
                         "phone": user.phone
                     }
@@ -61,8 +61,8 @@ class LoginView(APIView):
                     "accessToken": str(token),
                     "user": {
                         "userId": user.userId,
-                        "firstName": user.first_name,
-                        "lastName": user.last_name,
+                        "firstName": user.firstName,
+                        "lastName": user.lastName,
                         "email": user.email,
                         "phone": user.phone,
                     }
@@ -94,8 +94,8 @@ class UserView(APIView):
                     "message": "User record retrieved successfully",
                     "data": {
                         "userId": user.userId,
-                        "firstName": user.first_name,
-                        "lastName": user.last_name,
+                        "firstName": user.firstName,
+                        "lastName": user.lastName,
                         "email": user.email,
                         "phone": user.phone
                     }
