@@ -19,11 +19,9 @@ def user(db):
     User
     """
     return User.objects.create_user(
-        {
-            "email": "k012@gmail.com",
-            "password": "ihembosi",
-            "first_name": "uche",
-            "last_name": "okafor",
-            "phone": "08033668887"
-        }
+        email="k@gmail.com",
+        password="1234",
+        first_name="Test",
+        last_name="User",
+        phone="08033668887"
     )
