@@ -40,7 +40,7 @@ class RegisterView(APIView):
             "statusCode": 400,
             "errors": serializer.errors
         }
-        return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.validate(data), status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 
 class LoginView(APIView):
