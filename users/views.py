@@ -5,7 +5,6 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from users.authentication import refresh_token
-from users.serializers import RegisterUserSerializer
 from users.models import User
 from users.serializers import RegisterUserSerializer, UserSerializer
 
@@ -54,7 +53,7 @@ class LoginView(APIView):
         user = authenticate(email=email, password=password)
 
         if user:
-            token = refresh_token(user)
+            token = refresh_token(user).access_token
             response = {
                 "status": "success",
                 "message": "Login successful",
