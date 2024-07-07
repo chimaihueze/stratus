@@ -54,12 +54,13 @@ class OrganisationView(APIView):
 class GetOrganisationView(APIView):
     def get(self, request, pk):
         organisation = Organisation.objects.get(pk=pk)
+        user = request.user
         serializer = OrganisationSerializer(organisation)
 
-        if organisation:
+        if organisation in user.organisations.all():
             response = {
                 "status": "success",
-                "message": "<message>",
+                "message": "Organisation details retrieved successfully",
                 "data": serializer.data
             }
             return Response(response, status.HTTP_200_OK)
@@ -68,7 +69,7 @@ class GetOrganisationView(APIView):
             "message": "Client error",
             "statusCode": 400
         }
-        return Response(response, status.HTTP_400_BAD_REQUEST)
+        return Response(response, status.HTTP_401_UNAUTHORIZED)
 
 
 class CreateOrganisationView(APIView):
@@ -100,7 +101,6 @@ class AddUserToOrganisationView(APIView):
     def post(self, request, pk):
         try:
             user_id = request.data.get('userId')
-            # Convert user_id to a UUID if it's a valid string
             user_id = uuid.UUID(user_id)
 
             user = get_object_or_404(User, userId=user_id)
