@@ -6,6 +6,8 @@ from rest_framework.views import APIView
 
 from users.authentication import refresh_token
 from users.serializers import RegisterUserSerializer
+from users.models import User
+from users.serializers import RegisterUserSerializer, UserSerializer
 
 
 class RegisterView(APIView):
@@ -23,7 +25,7 @@ class RegisterView(APIView):
                 "data": {
                     "accessToken": str(token),
                     "user": {
-                        "userId": user.pk,
+                        "userId": user.userId,
                         "firstName": user.first_name,
                         "lastName": user.last_name,
                         "email": user.email,
@@ -59,7 +61,7 @@ class LoginView(APIView):
                 "data": {
                     "accessToken": str(token),
                     "user": {
-                        "userId": user.pk,
+                        "userId": user.userId,
                         "firstName": user.first_name,
                         "lastName": user.last_name,
                         "email": user.email,
