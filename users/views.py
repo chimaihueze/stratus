@@ -80,23 +80,29 @@ class LoginView(APIView):
 
 
 class UserView(APIView):
-    permission_classes = [AllowAny]
     serializer_class = UserSerializer
 
     def get(self, request, pk):
-        user = User.objects.get(pk=pk)
+        user = request.user
 
-        if user:
-            response = {
-                "status": "success",
-                "message": "User Found",
-                "data": {
-                    "userId": user.userId,
-                    "firstName": user.first_name,
-                    "lastName": user.last_name,
-                    "email": user.email,
-                    "phone": user.phone
+        try:
+            user_record = User.objects.get(pk=pk)
+
+            if user == user_record or user_record.organisations.filter(users=user).exists():
+                response = {
+                    "status": "success",
+                    "message": "User record retrieved successfully",
+                    "data": {
+                        "userId": user.userId,
+                        "firstName": user.first_name,
+                        "lastName": user.last_name,
+                        "email": user.email,
+                        "phone": user.phone
+                    }
                 }
-            }
-            return Response(response, status.HTTP_200_OK)
+                return Response(response, status.HTTP_200_OK)
 
+            return Response({"error": "Unauthorized access"}, status=status.HTTP_403_FORBIDDEN)
+
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
