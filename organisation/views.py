@@ -1,4 +1,8 @@
+import uuid
+
+from django.shortcuts import get_object_or_404
 from rest_framework import status
+from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -94,15 +98,30 @@ class CreateOrganisationView(APIView):
 
 class AddUserToOrganisationView(APIView):
     def post(self, request, pk):
-        user = User.objects.get(pk=request.data)
-        organisation = Organisation.objects.get(orgId=pk)
+        try:
+            user_id = request.data.get('userId')
+            # Convert user_id to a UUID if it's a valid string
+            user_id = uuid.UUID(user_id)
 
-        if user and organisation:
-            organisation.users.add(user)
-            organisation.save()
+            user = get_object_or_404(User, userId=user_id)
+            organisation = get_object_or_404(Organisation, orgId=pk)
 
+            if user and organisation:
+                user.organisations.add(organisation)
+                user.save()
+
+                response = {
+                    "status": "success",
+                    "message": "User added to organisation successfully"
+                }
+                return Response(response, status=status.HTTP_200_OK)
+            else:
+                raise ValidationError("Invalid user or organisation")
+
+        except (ValueError, ValidationError) as e:
             response = {
-                "status": "success",
-                "message": "User added to organisation successfully"
+                "status": "Bad Request",
+                "message": str(e),
+                "statusCode": 400
             }
-            return Response(response, status=status.HTTP_200_OK)
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
