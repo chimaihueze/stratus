@@ -6,7 +6,7 @@ from organisation.models import Organisation
 class OrganisationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Organisation
-        fields = ['name', 'description']
+        fields = ['orgId', 'name', 'description']
 
     def create(self, validated_data):
         organisation = Organisation.objects.create(**validated_data)
